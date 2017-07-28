@@ -75,10 +75,8 @@ bot.dialog('passwordReset',[
 
    (session)=>{
 
-        
-
-     //  session.send('Which Operating system do you use ? \n\n   <b>Select One :</b> \n\n - Windows \n\n - Macintosh')
-     //  session.endDialog()
+      session.send('Which Operating system do you use ? \n\n   <b>Select One :</b> \n\n - Windows \n\n - Macintosh')
+       session.endDialog()
    }
 ])
 
