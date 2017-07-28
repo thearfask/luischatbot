@@ -1,9 +1,9 @@
 
-'use strict'
+
 
 var builder = require('botbuilder');
 var restify = require('restify');
-const ServiceNow = require('service-now');
+//const ServiceNow = require('service-now');
 
 // Setup Restify Server
 var server = restify.createServer();
@@ -24,10 +24,7 @@ server.post('/api/messages', connector.listen());
 var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/181857c7-2760-473d-bfc5-70e797409c5d?subscription-key=0cd2a4d65c584da0ab06248a0ba35e80&timezoneOffset=0&verbose=true');
 var intents = new builder.IntentDialog({ recognizers:[recognizer]});
 
-var instance = new ServiceNow('https://dev25419.service-now.com/', 'admin', 'ArfaaShaikh@123');
-
-
-
+//var instance = new ServiceNow('https://dev25419.service-now.com/', 'admin', 'ArfaaShaikh@123');
 //var arrayOfQuestions = ['I am not able to receive emails', 'unable to send emails','send receive error in outlook'];
 var sol1 = 'Check if you connected to internet';
 var sol2 = 'Check if your LAN cable is connected or connected to Wifi';
@@ -39,6 +36,8 @@ var windowsSol = 'On Locked Screen , press ALT- CTRL - DEL and Click on reset pa
 
 var macSol = ' Go to system preferences then user account , click on change password and follow steps to reset';
 var arrayOfWindowsSolutions = [commonSol, windowsSol, macSol];
+
+bot.dialog('/', intents);
 
 
 intents.matches('GreetUser', [
