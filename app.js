@@ -66,8 +66,17 @@ intents.matches('Emailissues', [
 ])
 
 intents.matches('PasswordReset', [
-    function(session){
-        session.beginDialog('passwordReset')
+    function(session, args){
+
+        var passwordResetEntity = new builder.EntityRecognizer.findEntity(args.intents.entities, 'password');
+
+        if(passwordResetEntity){
+
+            session.beginDialog('passwordReset')
+            
+        }else{
+            session.send("false")
+        }
     }
 ])
 
@@ -92,27 +101,43 @@ intents.matches('WindowsUser',[
     }
 ])
 
-bot.dialog('askQuerry',[
+// bot.dialog('askQuerry',[
 	
-    function(session){
-            if(intents.matches('NotHelping')){
-           builder.Prompts.text(session,"Select an option : \n\n | Raise a Request |  Talk to our Executive | ?")
+//     function(session){
+//             if(intents.matches('NotHelping')){
+//         }else{
+//             session.send("invalid");
+//         }
+//     },
+//     
+	
+// ]);
+
+intents.matches('NotHelping',[
+    (session, args, next)=>{
+
+        var notHelpingEntity = new builder.EntityRecognizer.findEntity(args.intents.entities, 'notHelping');
+
+        if(notHelpingEntity){
+            session.send("Sorry I was Unable to solve your Querry ")
+            session.send("Select an option : \n\n | Raise a Request |  Talk to our Executive | ?")
+            session.endDialog()
         }else{
-            session.send("invalid");
+            session.send('Entity did not matched..')
         }
-    },
-    function(session, results){
-        if(intents.matches('RaiseTicket')){
+    }
+])
+
+intents.matches('RaiseTicket',[
+        function(session){
+            
             session.send("A Ticket has been raised for your issue \n\n")
             session.send("Ticket ID : 405949")
             session.send("Ticket Title : Email Issues")
             session.endDialog()
-        }else{
-            session.send("invalid")
+           
         }
-    }
-	
-]);
+])
 
 
 bot.dialog('configWindows', [
@@ -127,18 +152,11 @@ bot.dialog('configWindows', [
             
         }else if(udata.toLowerCase() == "no"){
             session.send( 'Try another Solution : ' + arrayOfWindowsSolutions[1] );
-            builder.Prompts.text(session, 'Did that work ? | Yes | No |' )
+            session.send( 'Did that work ? | Yes | No |' )
+            session.endDialog();
+
         }else{
             session.send('Try Again !! ')
-        }
-    },
-    (session, results)=>{
-        var udata = results.response;
-        if(udata.toLowerCase() == "yes"){
-            session.send('Happy to help you, keep asking me querries..');
-            session.endDialog()
-        }else if(udata.toLowerCase() == "no" ){
-            session.beginDialog('askQuerry')
         }
     }
 ])
@@ -170,19 +188,10 @@ bot.dialog('configMac', [
             }
         }else if(udata.toLowerCase() == "no"){
             session.send( 'Try another Solution : ' + arrayOfWindowsSolutions[2] +"Mac");
-            builder.Prompts.text(session, 'Did that work ? | Yes | No |' )
+            session.send( 'Did that work ? | Yes | No |' )
+            session.endDialog()
         }else{
             session.send('Try Again !! ')
         }
-    },
-    (session, results)=>{
-        var udata = results.response;
-        if(udata.toLowerCase() == "yes"){
-            session.send('Happy to help you, keep asking me querries..');
-           session.endDialog();
-        }else if(udata.toLowerCase()=="no"){
-            session.beginDialog('askQuerry')
-        }
-
     }
 ])
