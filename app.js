@@ -137,7 +137,7 @@ bot.dialog('configWindows', [
         if(udata.toLowerCase() == "yes"){
             session.send('Happy to help you, keep asking me querries..');
             session.endDialog()
-        }else{
+        }else if(udata.toLowerCase() == "no" ){
             session.beginDialog('askQuerry')
         }
     }
@@ -180,7 +180,7 @@ bot.dialog('configMac', [
         if(udata.toLowerCase() == "yes"){
             session.send('Happy to help you, keep asking me querries..');
            session.endDialog();
-        }else{
+        }else if(udata.toLowerCase()=="no"){
             session.beginDialog('askQuerry')
         }
 
