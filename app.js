@@ -43,6 +43,8 @@ bot.dialog('/', intents);
 intents.matches('GreetUser', [
     function (session){
         session.send( "Hi, How can I Help You ? ");
+        // session.userData.userName = "arfaa";
+        // session.send(session.userData.userName)
         //session.beginDialog('askQuerry');
     }
 ])
@@ -100,18 +102,6 @@ intents.matches('WindowsUser',[
         session.beginDialog('configWindows')
     }
 ])
-
-// bot.dialog('askQuerry',[
-	
-//     function(session){
-//             if(intents.matches('NotHelping')){
-//         }else{
-//             session.send("invalid");
-//         }
-//     },
-//     
-	
-// ]);
 
 intents.matches('NotHelping',[
     (session, args, next)=>{
