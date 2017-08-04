@@ -24,8 +24,9 @@ server.post('/api/messages', connector.listen());
 var recognizer = new builder.LuisRecognizer('https://westus.api.cognitive.microsoft.com/luis/v2.0/apps/181857c7-2760-473d-bfc5-70e797409c5d?subscription-key=0cd2a4d65c584da0ab06248a0ba35e80&timezoneOffset=0&verbose=true');
 var intents = new builder.IntentDialog({ recognizers:[recognizer]});
 
-//var instance = new ServiceNow('https://dev25419.service-now.com/', 'admin', 'ArfaaShaikh@123');
-//var arrayOfQuestions = ['I am not able to receive emails', 'unable to send emails','send receive error in outlook'];
+var ServiceNow = require('servicenow')(options);
+var Incident = ServiceNow.Incident;
+
 var sol1 = 'Check if you connected to internet';
 var sol2 = 'Check if your LAN cable is connected or connected to Wifi';
 var sol3 = 'Check if your MS outlook is connected to MS exchange or if you are working offline';
@@ -39,13 +40,12 @@ var arrayOfWindowsSolutions = [commonSol, windowsSol, macSol];
 
 bot.dialog('/', intents);
 
-
 intents.matches('GreetUser', [
     function (session){
         session.send( "Hi, How can I Help You ? ");
         // session.userData.userName = "arfaa";
         // session.send(session.userData.userName)
-        //session.beginDialog('askQuerry');
+        // session.beginDialog('askQuerry');
     }
 ])
 
@@ -70,15 +70,20 @@ intents.matches('Emailissues', [
 intents.matches('PasswordReset', [
     function(session, args){
 
-        var passwordResetEntity = new builder.EntityRecognizer.findEntity(args.intents.entities, 'password');
+        Incident.find('INC0123456', function(err, incident) {
+            console.log(incident.description);
+            session.send(incident.description)
+        });
 
-        if(passwordResetEntity){
+        // var passwordResetEntity = new builder.EntityRecognizer.findEntity(args.intents.entities, 'password');
 
-            session.beginDialog('passwordReset')
+        // if(passwordResetEntity){
+
+        //     session.beginDialog('passwordReset')
             
-        }else{
-            session.send("false")
-        }
+        // }else{
+        //     session.send("false")
+        // }
     }
 ])
 
