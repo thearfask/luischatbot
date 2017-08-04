@@ -70,7 +70,7 @@ intents.matches('Emailissues', [
 intents.matches('PasswordReset', [
     function(session, args){
 
-        Incident.find('INC0123456', function(err, incident) {
+        Incident.find('INC0010046', function(err, incident) {
             console.log(incident.description);
             session.send(incident.description)
         });
